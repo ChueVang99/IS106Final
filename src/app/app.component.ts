@@ -16,6 +16,6 @@ export class AppComponent implements OnInit {
 
   // Launch flex modal or alert (3pts reduced) showing about text
   openAboutModal() {
+    this.flexModal.openDialog("about-modal");
   }
-
 }
