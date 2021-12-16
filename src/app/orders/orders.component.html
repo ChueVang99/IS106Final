@@ -2,13 +2,13 @@
   <mat-card class="orders-grid">
     <div class="name-input-container">
       <span class="input-label">Order For:</span>
-      <input type="text" class="form-control" placeholder="Last name, First name">
+      <input [(ngModel)]="name" type="text" class="form-control" placeholder="Last name, First name">
     </div>
     <mat-toolbar class="action-bar" color="accent">
       <div class="align-right">
-        <button mat-raised-button>Add Hot Dog</button>
-        <button mat-raised-button>Add Hamberger</button>
-        <button mat-raised-button>Add Pizza</button>
+        <button mat-raised-button (click)="addItem('hot dog')">Add Hot Dog</button>
+        <button mat-raised-button (click)="addItem('hamberger')">Add Hamberger</button>
+        <button mat-raised-button (click)="addItem('pizza')">Add Pizza</button>
       </div>
     </mat-toolbar>
     <div class="table-grid">
@@ -27,55 +27,45 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <tr *ngFor="let order of orders, let i = index">
             <td><img class="item-image" [src]="order.image" alt="img"></td>
-            <td><input type="text" class="form-control" placeholder="PID"></td>
-            <td><input type="text" class="form-control" placeholder="Description"></td>
-            <td><input type="text" class="form-control" placeholder="Price"></td>
-            <td><input type="text" class="form-control" placeholder="Quantity"></td>
-            <td><button mat-raised-button color="primary" color="accent"><mat-icon>delete</mat-icon></button></td>
+            <td><input [(ngModel)]="order.pid" type="text" class="form-control" placeholder="PID"></td>
+            <td><input [(ngModel)]="order.description" type="text" class="form-control" placeholder="Description"></td>
+            <td><input [(ngModel)]="order.price" type="text" class="form-control" placeholder="Price"></td>
+            <td><input [(ngModel)]="order.quantity" type="text" class="form-control" placeholder="Quantity"></td>
+            <td><button (click)="delete(i)" mat-raised-button color="primary" color="accent">
+                <mat-icon>delete</mat-icon>
+              </button></td>
           </tr>
         </tbody>
       </table>
     </div>
     <div class="action-container">
-      <button mat-raised-button color="primary">Load Saved Items</button>
-      <button mat-raised-button color="primary">Clear</button>
-      <button mat-raised-button color="primary">Submit</button>
+      <button mat-raised-button color="primary" (click)="loadDefaultOrders()">Load Saved Items</button>
+      <button mat-raised-button color="primary" (click)="clear()">Clear</button>
+      <button mat-raised-button color="primary" (click)="submit()">Submit</button>
     </div>
   </mat-card>
 </div>
 <!-- the error modal -->
-<app-flex-modal #flex1
-  [transition]="'slide-in-right'"  
-  [modalStyle]="{'border':'5px solid #CCC'}"
-  [showToolbar]="true" 
-  [showDefaultAction]="false" 
-  [modalID]="'error-modal'" 
-  [width]="'615px'"
-  [height]="'auto'">
+<app-flex-modal #flex1 [transition]="'slide-in-right'" [modalStyle]="{'border':'5px solid #CCC'}" [showToolbar]="true"
+  [showDefaultAction]="false" [modalID]="'error-modal'" [width]="'615px'" [height]="'auto'">
   <span class="modal-title">Warning</span>
   <div class="modal-content">
     <h3>{{errorMessage}}</h3>
   </div>
   <div class="modal-action">
-      <button mat-raised-button color="primary" (click)="flex1.modal.cancel()">Close</button>
+    <button mat-raised-button color="primary" (click)="flex1.modal.cancel()">Close</button>
   </div>
 </app-flex-modal>
 <!-- the order success modal -->
-<app-flex-modal #flex2
-  [transition]="'slide-in-right'"  
-  [modalStyle]="{'border':'5px solid #CCC'}"
-  [showToolbar]="true" 
-  [showDefaultAction]="false" 
-  [modalID]="'confirm-modal'" 
-  [width]="'615px'"
-  [height]="'auto'">
+<app-flex-modal #flex2 [transition]="'slide-in-right'" [modalStyle]="{'border':'5px solid #CCC'}" [showToolbar]="true"
+  [showDefaultAction]="false" [modalID]="'confirm-modal'" [width]="'615px'" [height]="'auto'">
   <span class="modal-title">Order Confirmation</span>
   <div class="modal-content">
     <h3>{{confirmMessage}}</h3>
   </div>
   <div class="modal-action">
-      <button mat-raised-button color="primary" (click)="flex2.modal.cancel()">Close</button>
+    <button mat-raised-button color="primary" (click)="flex2.modal.cancel()">Close</button>
   </div>
 </app-flex-modal>
